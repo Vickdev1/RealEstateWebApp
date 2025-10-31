@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: doubletree-app-dev
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      - DB_HOST=postgres
+      - DB_NAME=doubletree_estate
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres_password
+      - DB_PORT=5432
+      - PHP_DISPLAY_ERRORS=On
+      - PHP_ERROR_REPORTING=E_ALL
+    volumes:
+      - ./:/var/www/html
+      - ./logs:/var/www/html/logs
+    depends_on:
+      - postgres
+    networks:
+      - doubletree-network
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: doubletree-postgres-dev
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=doubletree_estate
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres_password
+    volumes:
+      - postgres-dev-data:/var/lib/postgresql/data
+      - ./sql/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+    networks:
+      - doubletree-network
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: doubletree-pgadmin-dev
+    restart: unless-stopped
+    ports:
+      - "5050:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@doubletree.com
+      - PGADMIN_DEFAULT_PASSWORD=admin123
+    volumes:
+      - pgadmin-dev-data:/var/lib/pgadmin
+    depends_on:
+      - postgres
+    networks:
+      - doubletree-network
+
+networks:
+  doubletree-network:
+    driver: bridge
+
+volumes:
+  postgres-dev-data:
+  pgadmin-dev-data:

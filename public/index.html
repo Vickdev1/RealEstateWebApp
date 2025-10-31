@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Double Tree Estate - Unique Housing Solutions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .logo-text .main {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .logo-text .sub {
+            font-size: 12px;
+            color: #666;
+            font-weight: normal;
+        }
+
+        .nav {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav a:hover {
+            color: #7c7aff;
+        }
+
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(to right, rgba(255,255,255,0.95), rgba(255,255,255,0.7)), 
+                        var(--hero-bg, url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect fill="%23f5f5f5" width="1200" height="800"/><path fill="%23ddd" d="M0 400h1200v400H0z"/></svg>'));
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            padding: 5%;
+            margin-top: 70px;
+        }
+
+        .hero-content {
+            max-width: 600px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            color: #666;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #7c7aff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #6866dd;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(124, 122, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #7c7aff;
+            border: 2px solid #7c7aff;
+        }
+
+        .btn-secondary:hover {
+            background: #7c7aff;
+            color: white;
+        }
+
+        .section {
+            padding: 5rem 5%;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .about {
+            background: #f9f9f9;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .about-image {
+            width: 100%;
+            height: 400px;
+            background: #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            background-image: var(--about-img);
+            background-size: cover;
+            background-position: center;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .about-image svg {
+            display: var(--show-placeholder, block);
+        }
+
+        .about-text h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+            color: #666;
+        }
+
+        .services {
+            background: white;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .service-image {
+            width: 100%;
+            height: 200px;
+            background: #ddd;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .service-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .service-image svg {
+            display: var(--show-placeholder, block);
+        }
+
+        .service-content {
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .service-content h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .service-content p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .investment {
+            background: linear-gradient(to right, #f9f9f9 50%, #7c7aff 50%);
+        }
+
+        .investment-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: center;
+        }
+
+        .investment-text h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .investment-text .highlight {
+            color: #7c7aff;
+        }
+
+        .investment-images {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .investment-image {
+            width: 100%;
+            height: 200px;
+            background: #ddd;
+            border-radius: 10px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .investment-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 10px;
+        }
+
+        .testimonials {
+            background: white;
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .testimonial-card {
+            background: #f9f9f9;
+            padding: 2rem;
+            border-radius: 10px;
+            border-left: 4px solid #7c7aff;
+        }
+
+        .testimonial-card p {
+            color: #666;
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .listings {
+            background: #f9f9f9;
+        }
+
+        .listings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .listing-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .listing-image {
+            width: 100%;
+            height: 200px;
+            background: #ddd;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .listing-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .listing-image svg {
+            display: var(--show-placeholder, block);
+        }
+
+        .listing-info {
+            padding: 1.5rem;
+        }
+
+        .listing-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #7c7aff;
+            margin-bottom: 0.5rem;
+        }
+
+        .listing-details {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .why-choose {
+            background: white;
+        }
+
+        .why-list {
+            max-width: 800px;
+            margin: 0 auto;
+            list-style: none;
+        }
+
+        .why-list li {
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .why-list li:before {
+            content: "✓";
+            color: #7c7aff;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .contact {
+            background: #2c2c2c;
+            color: white;
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        .contact-form input::placeholder,
+        .contact-form textarea::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .business-hours {
+            background: #d4a574;
+            padding: 2rem;
+            border-radius: 10px;
+            color: #2c2c2c;
+        }
+
+        .business-hours h3 {
+            margin-bottom: 1rem;
+        }
+
+        .footer {
+            background: #1a1a1a;
+            color: white;
+            text-align: center;
+            padding: 2rem 5%;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: white;
+            text-decoration: none;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+
+        .social-links a:hover {
+            background: #7c7aff;
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .about-content,
+            .investment-content,
+            .contact-content {
+                grid-template-columns: 1fr;
+            }
+
+            .investment {
+                background: #f9f9f9;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">DT</div>
+            <div class="logo-text">
+                <span class="main">DOUBLE TREE</span>
+                <span class="sub">ESTATE</span>
+            </div>
+        </div>
+        <nav>
+            <ul class="nav">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#listings">Listings</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Unique housing solutions for you</h1>
+            <p>Whether you're buying, selling, or renting, we can be of assistance to you.</p>
+            <div class="cta-buttons">
+                <a href="#listings" class="btn btn-primary">Start Exploring</a>
+                <a href="#contact" class="btn btn-secondary">Properties Available</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="section about">
+        <div class="about-content">
+            <div class="about-image">
+                <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                    <rect fill="#ddd" width="400" height="300"/>
+                    <rect fill="#8b7355" x="50" y="150" width="150" height="100"/>
+                    <rect fill="#a0826d" x="250" y="180" width="100" height="70"/>
+                    <circle fill="#90a955" cx="150" cy="100" r="30"/>
+                    <path fill="#87ceeb" d="M0,0 h400 v120 Q200,150 0,120 Z"/>
+                </svg>
+            </div>
+            <div class="about-text">
+                <h2>About Double Tree</h2>
+                <p>Located in Nairobi, off Kangundo Road we are in the heart of the Double Tree Estate. It is a well secured and developing area. Whether buying, selling, renting or getting a piece of land for investment, we help our clients meet their housing needs with a distinctive of a mission. Great opportunity that will ground your family's strong foundation.</p>
+                <a href="#contact" class="btn btn-primary">Read More</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="section services">
+        <h2 class="section-title">Services & Strategies</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-image">
+                    <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+                        <rect fill="#f5f5f5" width="300" height="200"/>
+                        <rect fill="#ddd" x="50" y="80" width="200" height="80"/>
+                        <circle fill="#7c7aff" cx="150" cy="60" r="20"/>
+                    </svg>
+                </div>
+                <div class="service-content">
+                    <h3>Residential Listings</h3>
+                    <p>Find your dream home with our extensive residential property listings.</p>
+                </div>
+            </div>
+            <div class="service-card">
+                <div class="service-image">
+                    <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+                        <rect fill="#f5f5f5" width="300" height="200"/>
+                        <rect fill="#90a955" x="0" y="100" width="300" height="100"/>
+                        <circle fill="#87ceeb" cx="150" cy="50" r="30"/>
+                    </svg>
+                </div>
+                <div class="service-content">
+                    <h3>Sales and Leasing</h3>
+                    <p>Professional sales and leasing services tailored to your needs.</p>
+                </div>
+            </div>
+            <div class="service-card">
+                <div class="service-image">
+                    <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+                        <rect fill="#f5f5f5" width="300" height="200"/>
+                        <rect fill="#8b7355" x="80" y="100" width="140" height="60"/>
+                        <polygon fill="#a0826d" points="80,100 150,50 220,100"/>
+                    </svg>
+                </div>
+                <div class="service-content">
+                    <h3>Property Management</h3>
+                    <p>Comprehensive property management solutions for owners.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section investment">
+        <div class="investment-content">
+            <div class="investment-text">
+                <h2>Get the <span class="highlight">best property investment</span> options with the help of our highly experienced group of real estate brokers.</h2>
+            </div>
+            <div class="investment-images">
+                <div class="investment-image"></div>
+                <div class="investment-image"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section testimonials">
+        <h2 class="section-title">Satisfied Clients</h2>
+        <div class="testimonial-grid">
+            <div class="testimonial-card">
+                <p>"My real estate agent was with me and my wife every step of the way. She kept us updated throughout the process."</p>
+                <div class="testimonial-author">- Maina</div>
+            </div>
+            <div class="testimonial-card">
+                <p>"I always rely on Double Tree to take care of my real estate needs, no matter the location, square footage, or budget."</p>
+                <div class="testimonial-author">- Kimani</div>
+            </div>
+            <div class="testimonial-card">
+                <p>"Our agent went above and beyond what was expected of her. We're thankful for her excellent service and assistance."</p>
+                <div class="testimonial-author">- Macharia</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="listings" class="section listings">
+        <h2 class="section-title">Recent Listings</h2>
+        <div class="listings-grid">
+            <div class="listing-card">
+                <div class="listing-image">
+                    <svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+                        <rect fill="#90a955" width="280" height="200"/>
+                        <rect fill="#8b7355" x="40" y="100" width="100" height="60"/>
+                        <circle fill="#87ceeb" cx="140" cy="50" r="30"/>
+                    </svg>
+                </div>
+                <div class="listing-info">
+                    <div class="listing-price">KSH 2,500,000</div>
+                    <div class="listing-details">
+                        <strong>Modern Family Home</strong><br>
+                        3 Bedroom with SQ | Gated setting | CCTV Installed
+                    </div>
+                </div>
+            </div>
+            <div class="listing-card">
+                <div class="listing-image">
+                    <svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+                        <rect fill="#87ceeb" width="280" height="200"/>
+                        <rect fill="#a0826d" x="90" y="80" width="100" height="80"/>
+                        <polygon fill="#8b7355" points="90,80 140,40 190,80"/>
+                    </svg>
+                </div>
+                <div class="listing-info">
+                    <div class="listing-price">RENT KSH 48,000</div>
+                    <div class="listing-details">
+                        <strong>3 Bedroom with DSQ</strong><br>
+                        Covered setting | CCTV Installed
+                    </div>
+                </div>
+            </div>
+            <div class="listing-card">
+                <div class="listing-image">
+                    <svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+                        <rect fill="#dcedc8" width="280" height="200"/>
+                        <rect fill="#8b7355" x="70" y="120" width="60" height="40"/>
+                        <rect fill="#a0826d" x="150" y="120" width="60" height="40"/>
+                    </svg>
+                </div>
+                <div class="listing-info">
+                    <div class="listing-price">PLOT FOR SALE</div>
+                    <div class="listing-details">
+                        <strong>Prime Location</strong><br>
+                        50x100 plot with title deed
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section why-choose">
+        <h2 class="section-title">Why Choose Us?</h2>
+        <ul class="why-list">
+            <li>We guarantee the best deals for our clients</li>
+            <li>We have a strong track record of successful projects</li>
+            <li>We have a dedicated team with expertise and skills</li>
+            <li>We commit to quality, professionalism and reliability</li>
+            <li>We offer the best housing advisors ensuring the security of our clients in the highest priority</li>
+        </ul>
+    </section>
+
+    <section id="contact" class="section contact">
+        <h2 class="section-title">Let's Talk</h2>
+        <div class="contact-content">
+            <form class="contact-form">
+                <input type="text" placeholder="Your Name" required>
+                <input type="email" placeholder="E-mail Address" required>
+                <input type="tel" placeholder="Contact Number" required>
+                <textarea rows="5" placeholder="Leave us a message..." required></textarea>
+                <button type="submit" class="btn btn-primary">SEND MESSAGE</button>
+            </form>
+            <div class="business-hours">
+                <h3>Business Hours</h3>
+                <p><strong>Double Tree Estate</strong></p>
+                <p>Kangundo Road, Nairobi</p>
+                <p>Monday - Friday: 8am - 6pm</p>
+                <p>Saturday: 8am - 5pm</p>
+                <p>Sunday: 9am - 2pm</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>&copy; 2025 Double Tree Estate. All rights reserved.</p>
+        <div class="social-links">
+            <a href="#" aria-label="Facebook">f</a>
+            <a href="#" aria-label="Twitter">𝕏</a>
+            <a href="#" aria-label="Instagram">📷</a>
+            <a href="#" aria-label="LinkedIn">in</a>
+        </div>
+    </footer>
+
+    <script>
+        // ====== IMAGE CONFIGURATION ======
+        // Replace these URLs with your actual image URLs
+        const imageConfig = {
+            // Hero section background image
+            heroBg: 'https://lh3.googleusercontent.com/gps-cs-s/AG0ilSxE7DEbmK9KBkj3cw3C5eRk-9lM4GXtKNlKfDb43_yA7nzF8KdS0vy8crhY2DXndh7M3dz8rPZ1jEaOjjJ1TZVTCThoijHJbH8VqYZGM6zBIg_ihF6hSHLpcUBn0FLw7jcX6Gyr=s680-w680-h510-rw',  // e.g., 'https://example.com/hero-background.jpg'
+            
+            // About section image
+            aboutImage: 'https://imagedelivery.net/tvz2g0T58PTGFGiYPSFYTA/b15b6324-b808-402b-f854-0b2c376efa00/public',  // e.g., 'https://example.com/about-property.jpg'
+            
+            // Service images (3 services)
+            services: [
+                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTkJ9wTByxycQ1DRXJYcGUy6V_2YkIC38ke3rBNjGo7QLoFB3iSnDQ154n4Ma1RpII-hY&usqp=CAU',  // Residential Listings image
+                'https://imagedelivery.net/tvz2g0T58PTGFGiYPSFYTA/13842f52-93a9-43d6-4368-442ad3aeb800/public',  // Sales and Leasing image
+                'https://lh3.googleusercontent.com/p/AF1QipP0pSbNiRGkIAB2hIamRfCQS11b50AGuSOjNq6w=s680-w680-h510-rw'   // Property Management image
+            ],
+            
+            // Investment section images (2 images)
+            investment: [
+                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-Yu_WK_Sg0FL1c7N42Mso2lQIpch1BiUVe2OXknWGwLoOVDRIZG1CpdslNG2uvAi_RsY&usqp=CAU',  // First investment property image
+                'https://imagedelivery.net/tvz2g0T58PTGFGiYPSFYTA/fe34d211-a6a0-414a-bc3a-aed8f0030a00/public'   // Second investment property image
+            ],
+            
+            // Recent listings images (3 listings)
+            listings: [
+                'https://imagedelivery.net/tvz2g0T58PTGFGiYPSFYTA/b15b6324-b808-402b-f854-0b2c376efa00/public',  // First listing image
+                'https://lh3.googleusercontent.com/gps-cs-s/AG0ilSyd0oHP3RKUIEJwTLhxBVgR5bgzqQoO12-yZZh42h_F5wTWc9jbTFWqPzYYonlyDSyf3tbRWiDyv46a1fsXCQpKQNyXnQW-Ti25_v9iK02ggeqiroHki3LjusB33EvZgaWWcf-k2w=s680-w680-h510-rw',  // Second listing image
+                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-Yu_WK_Sg0FL1c7N42Mso2lQIpch1BiUVe2OXknWGwLoOVDRIZG1CpdslNG2uvAi_RsY&usqp=CAU'   // Third listing image
+            ]
+        };
+
+        // Apply hero background image
+        if (imageConfig.heroBg) {
+            document.documentElement.style.setProperty('--hero-bg', `url('${imageConfig.heroBg}')`);
+        }
+
+        // Apply about image
+        if (imageConfig.aboutImage) {
+            const aboutImg = document.querySelector('.about-image');
+            const img = document.createElement('img');
+            img.src = imageConfig.aboutImage;
+            img.alt = 'About Double Tree Estate';
+            aboutImg.innerHTML = '';
+            aboutImg.appendChild(img);
+        }
+
+        // Apply service images
+        const serviceImages = document.querySelectorAll('.service-image');
+        serviceImages.forEach((el, index) => {
+            if (imageConfig.services[index]) {
+                const img = document.createElement('img');
+                img.src = imageConfig.services[index];
+                img.alt = `Service ${index + 1}`;
+                el.innerHTML = '';
+                el.appendChild(img);
+            }
+        });
+
+        // Apply investment images
+        const investmentImages = document.querySelectorAll('.investment-image');
+        investmentImages.forEach((el, index) => {
+            if (imageConfig.investment[index]) {
+                const img = document.createElement('img');
+                img.src = imageConfig.investment[index];
+                img.alt = `Investment Property ${index + 1}`;
+                el.appendChild(img);
+            }
+        });
+
+        // Apply listing images
+        const listingImages = document.querySelectorAll('.listing-image');
+        listingImages.forEach((el, index) => {
+            if (imageConfig.listings[index]) {
+                const img = document.createElement('img');
+                img.src = imageConfig.listings[index];
+                img.alt = `Property Listing ${index + 1}`;
+                el.innerHTML = '';
+                el.appendChild(img);
+            }
+        });
+
+        // ====== END IMAGE CONFIGURATION ======
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        const form = document.querySelector('.contact-form');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Thank you for your message! We will get back to you soon.');
+            form.reset();
+        });
+
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.service-card, .listing-card, .testimonial-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

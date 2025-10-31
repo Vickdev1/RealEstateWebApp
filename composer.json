@@ -1,0 +1,7 @@
+{
+  "name": "doubletree/estate-backend",
+  "description": "Double Tree Estate Backend API",
+  "require": {
+    "php": ">=8.0"
+  }
+}

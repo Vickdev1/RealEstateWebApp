@@ -1,0 +1,40 @@
+# Version control
+.git
+.gitignore
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Logs
+logs/
+*.log
+
+# Dependencies
+vendor/
+node_modules/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose.override.yml
+
+# Database
+*.sql.backup
+postgres-data/
+
+# Temporary files
+*.tmp
+*.temp
+tmp/
+temp/

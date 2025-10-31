@@ -1,0 +1,80 @@
+# PHP
+/vendor/
+composer.phar
+*.log
+.php-cs-fixer.cache
+.phpunit.result.cache
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# IDE and Editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Docker
+docker-compose.override.yml
+/docker/ssl/*.key
+/docker/ssl/*.crt
+/docker/ssl/*.pem
+!/docker/ssl/.gitkeep
+
+# Logs
+/logs/*
+!/logs/.gitkeep
+*.log
+npm-debug.log*
+
+# Database
+/sql/backup/
+*.sql.gz
+*.dump
+*.bak
+
+# Cache and temporary files
+/cache/
+/tmp/
+.tmp/
+*.cache
+
+# Build and compiled files
+/dist/
+/build/
+/public/assets/
+/public/uploads/*
+!/public/uploads/.gitkeep
+
+# Node (if using any Node.js tools)
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Testing
+/coverage/
+.phpunit.cache/
+.phpunit.result.cache
+
+# Application specific
+/storage/*.key
+/public/storage
+/public/hot
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# PostgreSQL data directory (if using Docker volume)
+/postgres-data/
+/pgadmin-data/

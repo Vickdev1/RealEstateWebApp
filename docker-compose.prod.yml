@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - BUILD_ENV=production
+    container_name: doubletree-app-prod
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      - DB_HOST=postgres
+      - DB_NAME=doubletree_estate
+      - DB_USER=postgres
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_PORT=5432
+    volumes:
+      - ./logs:/var/www/html/logs
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - doubletree-network
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: doubletree-postgres-prod
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=doubletree_estate
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - postgres-prod-data:/var/lib/postgresql/data
+      - ./sql/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./backups:/backups
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - doubletree-network
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+
+networks:
+  doubletree-network:
+    driver: bridge
+
+volumes:
+  postgres-prod-data:
+    driver: local

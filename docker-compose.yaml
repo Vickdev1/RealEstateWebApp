@@ -1,0 +1,93 @@
+version: '3.8'
+
+services:
+  # PHP Application Service
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: doubletree-app
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      - DB_HOST=postgres
+      - DB_NAME=doubletree_estate
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres_password
+      - DB_PORT=5432
+    volumes:
+      - ./:/var/www/html
+      - ./logs:/var/www/html/logs
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - doubletree-network
+
+  # PostgreSQL Database Service
+  postgres:
+    image: postgres:15-alpine
+    container_name: doubletree-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=doubletree_estate
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres_password
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./sql/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./sql/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - doubletree-network
+
+  # pgAdmin Service (Database Management UI)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: doubletree-pgadmin
+    restart: unless-stopped
+    ports:
+      - "5050:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@doubletree.com
+      - PGADMIN_DEFAULT_PASSWORD=admin123
+      - PGADMIN_CONFIG_SERVER_MODE=False
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    depends_on:
+      - postgres
+    networks:
+      - doubletree-network
+
+  nginx:
+    image: nginx:alpine
+    container_name: doubletree-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./docker/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./docker/ssl:/etc/nginx/ssl:ro
+      - ./public:/var/www/html/public:ro
+    depends_on:
+      - app
+    networks:
+      - doubletree-network
+
+networks:
+  doubletree-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+    driver: local
+  pgadmin-data:
+    driver: local
